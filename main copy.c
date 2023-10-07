@@ -8,7 +8,11 @@ int totalperm = 0;
 
 ///////////////////////////////////////////////////////////
 
-
+void printBoard(int b[]) {
+  printf("%d %d %d\n", b[0], b[1], b[2]);
+  printf("%d %d %d\n", b[3], b[4], b[5]);
+  printf("%d %d %d\n\n", b[6], b[7], b[8]);
+}
 
 int checkVictory(int board[]) 
 {
@@ -61,9 +65,14 @@ void permuteBoard(int arr[], int used[], int k, int n, FILE**fpointer)
 	
 	if(checkVictory(arr) != 0)
 	{
-		int v = checkVictory(arr);
+		// int v = checkVictory(arr);
+		// addTabs(k + 1, &fp);
+		// fprintf(fp, "victory(%d);\n", v);
+
 		addTabs(k + 1, &fp);
-		fprintf(fp, "victory(%d);\n", v);
+		fprintf(fp, "printf(\"\\n\\nYOU WIN\");\n");
+		addTabs(k + 1, &fp);
+		fprintf(fp, "exit(0);\n");
 		return;
 	}
 
@@ -103,7 +112,18 @@ void permuteBoard(int arr[], int used[], int k, int n, FILE**fpointer)
 
 			//print array in fromat
 			addTabs(k + 1, &fp);
-			fprintf(fp, "int board[] = {%d, %d, %d, %d, %d, %d, %d, %d, %d};\n", arr[0], arr[1], arr[2], arr[3], arr[4], arr[5], arr[6], arr[7], arr[8]);
+			//fprintf(fp, "board = {%d, %d, %d, %d, %d, %d, %d, %d, %d};\n", arr[0], arr[1], arr[2], arr[3], arr[4], arr[5], arr[6], arr[7], arr[8]);
+			fprintf(fp, "board[0] = %d;\n", arr[0]);
+			fprintf(fp, "board[1] = %d;\n", arr[1]);
+			fprintf(fp, "board[2] = %d;\n", arr[2]);
+			fprintf(fp, "board[3] = %d;\n", arr[3]);
+			fprintf(fp, "board[4] = %d;\n", arr[4]);
+			fprintf(fp, "board[5] = %d;\n", arr[5]);
+			fprintf(fp, "board[6] = %d;\n", arr[6]);
+			fprintf(fp, "board[7] = %d;\n", arr[7]);
+			fprintf(fp, "board[8] = %d;\n", arr[8]);
+
+
 			addTabs(k + 1, &fp);
 			fprintf(fp, "printBoard(board, %d);\n", player);
 			
@@ -157,11 +177,12 @@ void fileInit(FILE **fpointer)
 	fprintf(fp, "\tprintf(\"2\\t%%c | %%c | %%c\\n\\n\", b[6], b[7], b[8]);\n");
 	fprintf(fp, "\n");
 	fprintf(fp, "\t// Whose player turn it is\n");
-	fprintf(fp, "\tchar player = 'X';\n");
+	//fprintf(fp, "\tchar player = 'X';\n");
 	fprintf(fp, "\tif(p == 1)\n");
-	fprintf(fp, "\t\tplayer = 'O';\n");
-	fprintf(fp, "\n");
-	fprintf(fp, "\tprintf(\"Player '%%c', make a move (x y):\\n\", player);\n");
+	fprintf(fp, "\t\tprintf(\"Player 'O', make a move (x y):\\n\");\n");
+	fprintf(fp, "\telse\n");
+	fprintf(fp, "\t\tprintf(\"Player 'X', make a move (x y):\\n\");\n");
+
 	fprintf(fp, "}\n\n");
 
 	fprintf(fp, "void victory(int p)\n");
