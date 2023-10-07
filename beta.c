@@ -3,6 +3,7 @@
 // ----
 #include <stdio.h>
 
+#define BOARD 9
 int horizontalWin(char arr[3][3]) {
     int numRows = 3;
     int numCols = 3;
@@ -95,6 +96,41 @@ void displayBoard(char board[3][3]) {
     }
     printf("\n");
 }
+void printBoard(int b[])
+{
+    printf("%d %d %d\n", b[0], b[1], b[2]);
+    printf("%d %d %d\n", b[3], b[4], b[5]);
+    printf("%d %d %d\n\n", b[6], b[7], b[8]);
+}
+void permuteBoard(char board[3][3], int used[], int k, int n)
+{
+    // Player turn and symbol
+    char player;
+    if (k % 2 == 0)
+        player = 'X';
+    else
+        player = 'O';
+
+    // Iterate through the empty cells of the board
+    int i;
+    for (i = 0; i < n; i++)
+    {
+        if (!used[i]) // If cell i was not used
+        {
+            used[i] = 1;        // Mark that it is used
+            int row = i / 3;    // Calculate the row index from i
+            int col = i % 3;    // Calculate the column index from i
+            board[row][col] = player; // Update the board with the player's symbol
+            displayBoard(board);     // Display the current state of the board
+            permuteBoard(board, used, k + 1, n); // Recursively continue with the next player
+            board[row][col] = ' '; // Clear the cell for the next process
+            used[i] = 0;          // Unmark i for the next process
+        }
+    }
+}
+
+
+
 
 int main() {
     char board[3][3] = {{' ', ' ', ' '}, {' ', ' ', ' '}, {' ', ' ', ' '}};
@@ -104,50 +140,64 @@ int main() {
     int gameOver = 0; // Flag to indicate whether the game is over
     
     int turn=0; //Flag to see the turn
-    while (!gameOver) {
-        // Display the current state of the board
-        displayBoard(board);
+    int used[9] = {0}; // Initialize the used array for permutations
+    int typeOfGame;
+
+    printf("Choose the type of game:\n");
+    printf("1. Normal Tic-Tac-Toe\n");
+    printf("2. Watch every possible game\n");
+    scanf("%d", &typeOfGame);
+    
+    if(typeOfGame==1){
+	
+    	while (!gameOver) {
+        	// Display the current state of the board
+        	displayBoard(board);
         
-        // Get the current player's move
-        int row, col;
-        if(currentPlayer==0){
-        	printf("Player %d (X) Enter your move (row and column): ", currentPlayer + 1);
-        	scanf("%d %d", &row, &col);
-    	}else{
-    		printf("Player %d (O) Enter your move (row and column): ", currentPlayer + 1);
-        	scanf("%d %d", &row, &col);
-		}
+        	// Get the current player's move
+        	int row, col;
+        	if(currentPlayer==0){
+        		printf("Player %d (X) Enter your move (row and column): ", currentPlayer + 1);
+        		scanf("%d %d", &row, &col);
+    		}else{
+    			printf("Player %d (O) Enter your move (row and column): ", currentPlayer + 1);
+        		scanf("%d %d", &row, &col);
+			}
         
-        // Check if the move is valid
-        if (row < 0 || row >= 3 || col < 0 || col >= 3 || board[row][col] != ' ') {
-            printf("Invalid move. Try again.\n");
-            continue; // Go back to the start of the loop
-        }
+        	// Check if the move is valid
+        	if (row < 0 || row >= 3 || col < 0 || col >= 3 || board[row][col] != ' ') {
+            	printf("Invalid move. Try again.\n");
+            	continue; // Go back to the start of the loop
+        	}
         
-        // Update the board with the player's move
-        board[row][col] = (currentPlayer == 0) ? 'X' : 'O';
+        	// Update the board with the player's move
+        	board[row][col] = (currentPlayer == 0) ? 'X' : 'O';
         
-        // Switch to the next player
-        currentPlayer = 1 - currentPlayer;
-        // Check for a win or a draw (you can implement this logic in a separate function)
-        turn+=1;
-        if(turn>=5 && horizontalWin(board)==1){
-        	break;
-		}else if(turn>=5 && verticalWin(board)==1){
-        	break;
-		}else if(turn>=5 && diagonalWin(board)==1 && board[1][1]!=' '){
-			break;
-		}
-		if(turn>=9){
-        	gameOver+=1; // If the game is over, set gameOver to 1
-		}
+        	// Switch to the next player
+        	currentPlayer = 1 - currentPlayer;
+        	// Check for a win or a draw (you can implement this logic in a separate function)
+        	turn+=1;
+        	if(turn>=5 && horizontalWin(board)==1){
+        		break;
+			}else if(turn>=5 && verticalWin(board)==1){
+        		break;
+			}else if(turn>=5 && diagonalWin(board)==1 && board[1][1]!=' '){
+				break;
+			}
+			if(turn>=9){
+       		 	gameOver+=1; // If the game is over, set gameOver to 1
+			}
+    	}
+    
+    	// Display the final state of the board and the game result
+    	displayBoard(board);
+    	// Print the result of the game (win, draw, or quit)
+    	
+	} else if (typeOfGame == 2) {
+        permuteBoard(board, used, 0, 9); // Call the permuteBoard function for watching every possible game
+    } else {
+        printf("Invalid choice. Exiting.\n");
     }
-    
-    // Display the final state of the board and the game result
-    displayBoard(board);
-    // Print the result of the game (win, draw, or quit)
-    // Ask players if they want to play again
-    
+	// Ask players if they want to play again
     return 0;
 }
-
