@@ -10,35 +10,36 @@ void printBoard(int b[])
 {
     printf("%d %d %d\n", b[0], b[1], b[2]);
     printf("%d %d %d\n", b[3], b[4], b[5]);
-    printf("%d %d %d\n", b[6], b[7], b[8]);
+    printf("%d %d %d\n\n", b[6], b[7], b[8]);
 }
 
-void permuteBoard(int b[], int turn, int useable)
+void permuteBoard(int arr[], int used[], int k, int n)
 {
+	//Test
+	char r = ' ';
+	scanf("%c", &r);
+	
     //Player turn and symbol
     int player;
-    if(turn == 0)
-        player = '1';
+    if(k % 2 == 0)
+        player = 1;
     else
-        player = '2';
-    
-    //break Case
-    if(useable == 0)
-        //PRINT BOARD
-        return 0;
+        player = 2;
 
-    //Permute Check
-    for(int i = 0; i < useable; i++)
-    {
-        int j = i;
-        while(b[j] != 0)
-            j++;
-
-        b[j] = player;
-        printBoard(b);
-        permuteBoard(b, (turn + 1)%2, useable - 1);
-        b[j] = 0;
-    }
+	//EVERY PERMUTATION OF TICTACTOE HAHAHAHA
+	for(int i=0; i<n; i++)
+	{
+		if(!used[i]) //if i was not used
+		{
+			used[i] = 1; //mark that it is used
+			arr[i] = player;
+			printBoard(arr);
+			permuteBoard(arr, used, k+1, n); //increase k and grow further
+			arr[i] = 0;
+			used[i] = 0; //unmark i for next process
+		}
+	}
+	
 
 }
 
@@ -46,9 +47,9 @@ void permuteBoard(int b[], int turn, int useable)
 
 int main(void)
 {
-    int board[BOARD] = {0};
+    int board[BOARD] = {0}, used[BOARD] = {0};
 
-    permuteBoard(board, 0, BOARD);
+    permuteBoard(board, used, 0, BOARD);
 }
 
 ///////////////////////////////////////////////////////////
