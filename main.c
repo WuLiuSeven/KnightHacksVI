@@ -51,10 +51,6 @@ void addTabs(int a, FILE ** fpointer)
 		fprintf(fp, "\t");
 }
 
-void ifThing(FILE **fpointer)
-{
-	
-}
 
 void permuteBoard(int arr[], int used[], int k, int n, FILE**fpointer) 
 {
@@ -78,7 +74,8 @@ void permuteBoard(int arr[], int used[], int k, int n, FILE**fpointer)
 	if(k == BOARD)
 	{
 		addTabs(k + 1, &fp);
-		fprintf(fp, "fprintf(fp, \"\\n\\nTIE GAME\");\n");
+		fprintf(fp, "printf(\"\\n\\nTIE GAME\");\n");
+		addTabs(k + 1, &fp);
 		fprintf(fp, "exit(0);\n");
 		return;
 	}
@@ -87,8 +84,10 @@ void permuteBoard(int arr[], int used[], int k, int n, FILE**fpointer)
 	fprintf(fp, "while (1 == 1)\n");
 	addTabs(k, &fp);
 	fprintf(fp, "{\n");
+	addTabs(k + 1, &fp);
+	fprintf(fp, "scanf(\"%%d %%d\", &next[0], &next[1]);\n");
 	
-	// EVERY PERMUTATION OF TICTACTOE HAHAHAHA
+	// EVERY PERMUTATION OF TICTACTOE MUAHAHAHAHA
 	for (int i = 0; i < BOARD; i++) 
 	{
 		if (!used[i]) // if i was not usedw
@@ -99,7 +98,8 @@ void permuteBoard(int arr[], int used[], int k, int n, FILE**fpointer)
 			//printBoard(arr);
 			int x = i % 3;
     		int y = i / 3;
-				
+			
+			
 			addTabs(k + 1, &fp);
 			fprintf(fp, "if (next[%d] == 0 && next[%d] == 0) // INPUT\n", x, y);
 			addTabs(k + 1, &fp);
@@ -123,7 +123,7 @@ void permuteBoard(int arr[], int used[], int k, int n, FILE**fpointer)
 	}
 
 	addTabs(k + 1, &fp);
-	fprintf(fp, "fprintf(fp, \"Invalid move, please try again:\\n\");\n");
+	fprintf(fp, "printf(\"Invalid move, please try again:\\n\");\n");
 	
 	addTabs(k, &fp);
 	fprintf(fp, "}\n");
@@ -196,6 +196,8 @@ int main(void)
 	permuteBoard(board, used, 0, BOARD, &fp);
 
 	printf("%d",totalperm);
+
+	fprintf(fp, "}\n");
 }
 
 ///////////////////////////////////////////////////////////
