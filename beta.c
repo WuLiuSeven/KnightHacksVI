@@ -141,8 +141,10 @@ int main() {
     
     int turn=0; //Flag to see the turn
     int used[9] = {0}; // Initialize the used array for permutations
-    int typeOfGame;
-
+    int typeOfGame=1;
+    int continue1=1;
+	while(continue1!= 0){
+	
     printf("Choose the type of game:\n");
     printf("1. Normal Tic-Tac-Toe\n");
     printf("2. Watch every possible game\n");
@@ -199,5 +201,10 @@ int main() {
         printf("Invalid choice. Exiting.\n");
     }
 	// Ask players if they want to play again
+	printf("Want to play again?\n");
+    printf("1. Yes\n");
+    printf("0. No\n");
+    scanf("%d", &continue1);
+}
     return 0;
 }
